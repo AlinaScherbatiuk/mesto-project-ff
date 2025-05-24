@@ -19,12 +19,13 @@ const createCard = (item, deleteCard) => {
         if (cardTitle) {
             cardTitle.textContent = item.name;
         }
-        
+
         cardsParent.append(cardClone);
 
         if (deleteButton) {
             deleteButton.addEventListener('click', deleteCard);
         }
+        return cardClone;
     }
 }
 //  Функция удаления карточки
