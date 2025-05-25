@@ -18,9 +18,7 @@ const createCard = (item, deleteCard) => {
         }
         if (cardTitle) {
             cardTitle.textContent = item.name;
-        }
-
-        cardsParent.append(cardClone);
+        } 
 
         if (deleteButton) {
             deleteButton.addEventListener('click', deleteCard);
@@ -33,5 +31,8 @@ const deleteCard = (event) => event.target.closest('.card').remove();
 
 // Вывести карточки на страницу
 if (initialCards && initialCards.length > 0) {
-    initialCards.forEach(card => createCard(card, deleteCard));
+    initialCards.forEach(card => {
+     const newCard = createCard(card, deleteCard);
+     cardsParent.append(newCard);
+    });
 }
