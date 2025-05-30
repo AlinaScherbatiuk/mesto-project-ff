@@ -60,7 +60,6 @@ closeButtons.forEach((btn) => {
 
 addButton.addEventListener('click', () => openModal(newCardPupup));
 
-
 newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   addNewCard(evt, cardName, imgUrl, cardsParent);
@@ -102,7 +101,6 @@ function updateProfileData(evt, nameInput, descriptionInput, profilTitle, profil
   profilTitle.textContent = nameInputValue;
   profilDesc.textContent = jobInputValue;
 }
-
 
 function addNewCard(evt, cardName, imgUrl, cardsParent) {
   evt.preventDefault();
