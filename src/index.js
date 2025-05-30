@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
   drawCards(initialCards, cardsParent);
 });
 
-document.querySelectorAll('.popup').forEach(item => item.classList.add('popup_is-animated'));
-
 document.querySelectorAll('.popup').forEach(modal => {
+  modal.classList.add('popup_is-animated');
+
   modal.addEventListener('click', (evt) => {
     if (evt.target === modal) {
       closeModal(modal);
