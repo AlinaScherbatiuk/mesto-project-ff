@@ -1,9 +1,14 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const path = require('path');
 module.exports = {
+  optimization: {
+    minimizer: [
+      new CssMinimizerPlugin(),
+    ],
+  },
   entry: { main: './src/index.js' },
   output: {
     filename: 'main.js',
@@ -23,7 +28,8 @@ module.exports = {
         test: /\.css$/i,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader'
+          'css-loader',
+          'postcss-loader',
         ],
       },
       {
@@ -32,19 +38,24 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
-      }
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name].[hash][ext]',
+        }
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name].[hash][ext]',
+        }
+      },
     ],
   },
   plugins: [
-     new CopyPlugin({
-      patterns: [
-        {
-          from: './images',
-          to: 'images',
-          force:true
-        }
-      ]
-    }),
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),

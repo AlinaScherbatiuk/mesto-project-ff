@@ -1,1 +1,180 @@
-(()=>{"use strict";var e,t=function(e,t){var n=document.querySelector("#card-template").content.cloneNode(!0).children[0],o=n.querySelector(".card__delete-button"),r=n.querySelector(".card__like-button"),c=n.querySelector(".card__title"),u=n.querySelector(".card__image");return c.textContent=e.name,u.src=e.link,u.alt=e.name,o.addEventListener("click",(function(){!function(e){e.remove()}(n)})),u.addEventListener("click",(function(){t(e.link,e.name,c.textContent)})),r.addEventListener("click",(function(){!function(e){e.querySelector(".card__like-button").classList.toggle("card__like-button_is-active")}(n)})),n},n=function(e){if("Escape"===e.key){var t=document.querySelector(".popup_is-opened");t&&r(t)}},o=function(e){e.classList.add("popup_is-opened"),document.addEventListener("keydown",n)},r=function(e){e.classList.remove("popup_is-opened"),document.removeEventListener("keydown",n)},c=document.querySelectorAll(".popup"),u=document.querySelector(".places__list")||document.body,p=document.querySelector(".popup_type_edit"),i=document.querySelector(".profile__edit-button"),a=document.querySelectorAll(".popup__close"),d=document.querySelector(".profile__title"),l=document.querySelector(".profile__description"),s=document.querySelector(".popup__input_type_name"),m=document.querySelector(".popup__input_type_description"),_=document.querySelector(".profile__add-button"),f=document.querySelector(".popup_type_new-card"),v=document.querySelector(".popup__input_type_card-name"),y=document.querySelector(".popup__input_type_url"),k=document.forms["new-place"],q=document.forms["edit-profile"],S=document.querySelector(".popup_type_image");e=u,[{name:"Архыз",link:"https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg"},{name:"Челябинская область",link:"https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg"},{name:"Иваново",link:"https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg"},{name:"Камчатка",link:"https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg"},{name:"Холмогорский район",link:"https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg"},{name:"Байкал",link:"https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg"}].forEach((function(n){var o=t(n,(function(){return E(n.link,n.name,n.name)}));e.append(o)})),c.forEach((function(e){return e.classList.add("popup_is-animated")})),q.addEventListener("submit",(function(e){e.preventDefault(),function(e,t,n,o,r){e.preventDefault();var c=t.value,u=n.value;o.textContent=c,r.textContent=u}(e,s,m,d,l),r(p)})),i.addEventListener("click",(function(){return function(e,t,n,r,c){t.value=r.textContent,n.value=c.textContent,o(e)}(p,s,m,d,l)})),a.forEach((function(e){e.addEventListener("click",(function(e){!function(e){var t=e.target.closest(".popup");t&&r(t)}(e)}))})),_.addEventListener("click",(function(){return o(f)})),document.querySelectorAll(".popup").forEach((function(e){e.addEventListener("click",(function(t){t.target===e&&r(e)}))})),document.querySelectorAll(".popup__close").forEach((function(e){e.addEventListener("click",(function(){e.closest(".popup").classList.remove("popup_opened")}))})),k.addEventListener("submit",(function(e){e.preventDefault(),function(e,n,o,r){e.preventDefault();var c={name:n.value,link:o.value},u=t(c,(function(){return E(c.link,c.name,c.name)}));r.prepend(u)}(e,v,y,u),v.value="",y.value="",r(f)}));var E=function(e,t,n){var r=S.querySelector(".popup__image"),c=S.querySelector(".popup__caption");r.src=e,r.alt=t,c.textContent=n,o(S)}})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+
+;// ./src/cards.js
+var initialCards = [{
+  name: "Архыз",
+  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg"
+}, {
+  name: "Челябинская область",
+  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg"
+}, {
+  name: "Иваново",
+  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg"
+}, {
+  name: "Камчатка",
+  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg"
+}, {
+  name: "Холмогорский район",
+  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg"
+}, {
+  name: "Байкал",
+  link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg"
+}];
+;// ./src/card.js
+var deleteCard = function deleteCard(cardElement) {
+  return cardElement.remove();
+};
+var likeBtnClick = function likeBtnClick(cardElement) {
+  return cardElement.querySelector('.card__like-button').classList.toggle('card__like-button_is-active');
+};
+var createCard = function createCard(item, handleImageClick) {
+  var cardTemplate = document.querySelector('#card-template');
+  var cardElement = cardTemplate.content.cloneNode(true).children[0];
+  var deleteButton = cardElement.querySelector('.card__delete-button');
+  var likeBtn = cardElement.querySelector('.card__like-button');
+  var cardTitle = cardElement.querySelector('.card__title');
+  var cardImage = cardElement.querySelector('.card__image');
+  cardTitle.textContent = item.name;
+  cardImage.src = item.link;
+  cardImage.alt = item.name;
+  deleteButton.addEventListener('click', function () {
+    deleteCard(cardElement);
+  });
+  cardImage.addEventListener('click', function () {
+    handleImageClick(item.link, item.name, cardTitle.textContent);
+  });
+  likeBtn.addEventListener('click', function () {
+    likeBtnClick(cardElement);
+  });
+  return cardElement;
+};
+
+;// ./src/modal.js
+var handleCloseButtonClick = function handleCloseButtonClick(evt) {
+  var modal = evt.target.closest(".popup");
+  if (modal) {
+    closeModal(modal);
+  }
+};
+var handleEscapeBtn = function handleEscapeBtn(evt) {
+  if (evt.key === "Escape") {
+    var openedModal = document.querySelector(".popup_is-opened");
+    if (openedModal) closeModal(openedModal);
+  }
+};
+var openModal = function openModal(modal) {
+  modal.classList.add("popup_is-opened");
+  document.addEventListener("keydown", handleEscapeBtn);
+};
+var closeModal = function closeModal(modal) {
+  modal.classList.remove("popup_is-opened");
+  document.removeEventListener("keydown", handleEscapeBtn);
+};
+
+;// ./src/index.js
+
+
+
+
+var cardsParent = document.querySelector('.places__list');
+var editModal = document.querySelector('.popup_type_edit');
+var imagePopup = document.querySelector('.popup_type_image');
+var newCardPupup = document.querySelector('.popup_type_new-card');
+var closeButtons = document.querySelectorAll('.popup__close');
+var nameInput = document.querySelector('.popup__input_type_name');
+var descriptionInput = document.querySelector('.popup__input_type_description');
+var cardName = document.querySelector('.popup__input_type_card-name');
+var imgUrl = document.querySelector('.popup__input_type_url');
+var editButton = document.querySelector('.profile__edit-button');
+var profilTitle = document.querySelector('.profile__title');
+var profilDesc = document.querySelector('.profile__description');
+var addButton = document.querySelector('.profile__add-button');
+var newPlaceForm = document.forms["new-place"];
+var editProfileForm = document.forms["edit-profile"];
+
+//events
+document.addEventListener('DOMContentLoaded', function () {
+  drawCards(initialCards, cardsParent);
+});
+document.querySelectorAll('.popup').forEach(function (modal) {
+  modal.classList.add('popup_is-animated');
+  modal.addEventListener('click', function (evt) {
+    if (evt.target === modal) {
+      closeModal(modal);
+    }
+  });
+});
+document.querySelectorAll('.popup__close').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    btn.closest('.popup').classList.remove('popup_opened');
+  });
+});
+editProfileForm.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  updateProfileData(evt, nameInput, descriptionInput, profilTitle, profilDesc);
+  closeModal(editModal);
+});
+editButton.addEventListener('click', function () {
+  return openProfileModal(editModal, nameInput, descriptionInput, profilTitle, profilDesc);
+});
+closeButtons.forEach(function (btn) {
+  btn.addEventListener('click', function (evt) {
+    handleCloseButtonClick(evt);
+  });
+});
+addButton.addEventListener('click', function () {
+  return openModal(newCardPupup);
+});
+newPlaceForm.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  addNewCard(evt, cardName, imgUrl, cardsParent);
+  cardName.value = '';
+  imgUrl.value = '';
+  closeModal(newCardPupup);
+});
+
+//functions
+function drawCards(cards, container) {
+  cards.forEach(function (card) {
+    var cardElem = createCard(card, function () {
+      return openImagePopup(card.link, card.name, card.name);
+    });
+    container.append(cardElem);
+  });
+}
+function openProfileModal(modal, nameInput, descriptionInput, profilTitle, profilDesc) {
+  nameInput.value = profilTitle.textContent;
+  descriptionInput.value = profilDesc.textContent;
+  openModal(modal);
+}
+function openImagePopup(src, alt, caption) {
+  var popupImage = imagePopup.querySelector('.popup__image');
+  var popupCaption = imagePopup.querySelector('.popup__caption');
+  popupImage.src = src;
+  popupImage.alt = alt;
+  popupCaption.textContent = caption;
+  openModal(imagePopup);
+}
+function updateProfileData(evt, nameInput, descriptionInput, profilTitle, profilDesc) {
+  evt.preventDefault();
+  var nameInputValue = nameInput.value;
+  var jobInputValue = descriptionInput.value;
+  profilTitle.textContent = nameInputValue;
+  profilDesc.textContent = jobInputValue;
+}
+function addNewCard(evt, cardName, imgUrl, cardsParent) {
+  evt.preventDefault();
+  var newImg = cardName.value;
+  var newUrl = imgUrl.value;
+  var card = {
+    name: newImg,
+    link: newUrl
+  };
+  var cardElem = createCard(card, function () {
+    return openImagePopup(card.link, card.name, card.name);
+  });
+  cardsParent.prepend(cardElem);
+}
+/******/ })()
+;

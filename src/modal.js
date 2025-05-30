@@ -1,10 +1,3 @@
-const handleCloseButtonClick = (evt) => {
-    const modal = evt.target.closest(".popup");
-    if (modal) {
-        closeModal(modal);
-    }
-};
-
 const handleEscapeBtn = (evt) => {
     if (evt.key === "Escape") {
         const openedModal = document.querySelector(".popup_is-opened");
@@ -21,4 +14,4 @@ const closeModal = (modal) => {
     modal.classList.remove("popup_is-opened");
     document.removeEventListener("keydown", handleEscapeBtn);
 };
-export { openModal, closeModal, handleCloseButtonClick };
+export { openModal, closeModal };
