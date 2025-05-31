@@ -1,7 +1,7 @@
 import '/pages/index.css';
-import { initialCards } from './cards.js';
-import { createCard } from './card.js';
-import { closeModal, openModal } from './modal.js';
+import { initialCards } from './components/cards.js';
+import { createCard } from './components/card.js';
+import { closeModal, openModal } from './components/modal.js';
 
 const cardsParent = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template');
@@ -9,7 +9,7 @@ const cardTemplate = document.querySelector('#card-template');
 const editModal = document.querySelector('.popup_type_edit');
 const imagePopup = document.querySelector('.popup_type_image');
 const popupImage = imagePopup.querySelector('.popup__image');
-const popupCaption = imagePopup.querySelector('.popup__caption');
+const popupImageCaption = imagePopup.querySelector('.popup__caption');
 const newCardPupup = document.querySelector('.popup_type_new-card');
 
 const closeButtons = document.querySelectorAll('.popup__close');
@@ -86,7 +86,7 @@ function openImagePopup(src, alt, caption) {
 
   popupImage.src = src;
   popupImage.alt = alt;
-  popupCaption.textContent = caption;
+  popupImageCaption.textContent = caption;
   openModal(imagePopup);
 }
 
