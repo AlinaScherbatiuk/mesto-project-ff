@@ -1,4 +1,4 @@
-import '/pages/index.css';
+import './pages/index.css';
 import { initialCards } from './components/cards.js';
 import { createCard } from './components/card.js';
 import { closeModal, openModal } from './components/modal.js';
