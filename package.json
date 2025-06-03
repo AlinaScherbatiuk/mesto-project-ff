@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack serve --open"
+    "dev": "webpack serve --open"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "webpack-dev-server": "^5.2.1"
   },
   "dependencies": {
+    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^13.0.0",
     "file-loader": "^6.2.0"
   }
