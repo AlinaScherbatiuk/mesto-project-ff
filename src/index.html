@@ -46,15 +46,25 @@
               name="name"
               class="popup__input popup__input_type_name"
               placeholder="Имя"
+              minlength="2"
+              maxlength="40"
+              pattern="^[A-Za-zА-Яа-яёЁ\- ]+$"
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
+            <span class="popup__input-error name-input-error"></span>
             <input
               type="text"
               name="description"
               class="popup__input popup__input_type_description"
               placeholder="Занятие"
+              minlength="2"
+              maxlength="200"
+              pattern="^[A-Za-zА-Яа-яёЁ\- ]+$"
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
+            <span class="popup__input-error description-input-error"></span>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>
@@ -71,8 +81,13 @@
               name="place-name"
               class="popup__input popup__input_type_card-name"
               placeholder="Название"
+              minlength="2"
+              maxlength="30"
+              pattern="^[A-Za-zА-Яа-яёЁ\- ]+$"
+              data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
               required
             />
+            <span class="popup__input-error place-name-input-error"></span>
             <input
               type="url"
               name="link"
@@ -80,6 +95,7 @@
               placeholder="Ссылка на картинку"
               required
             />
+            <span class="popup__input-error link-input-error"></span>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>
@@ -94,7 +110,25 @@
         </div>
       </div>
     </div>
-
+    <div class="popup popup_type_avatar">
+      <div class="popup__content avatar">
+        <button type="button" class="popup__close"></button>
+        <h3 class="popup__title">Обновить аватар</h3>
+        <form class="popup__form" name="avatar-form">
+          <input
+            type="url"
+            name="avatar-link"
+            class="popup__input popup__input_type_url"
+            placeholder="Ссылка на аватар"
+            id="avatar-input"
+            data-error-message="Введите корректный URL"
+            required
+          />
+          <span class="popup__input-error avatar-link-input-error"></span>
+          <button type="submit" class="button popup__button">Сохранить</button>
+        </form>
+      </div>
+    </div>
     <template id="card-template">
       <li class="places__item card">
         <img class="card__image" src="#" alt="" />

@@ -1,8 +1,8 @@
 import './pages/index.css';
-//import { initialCards } from './components/cards.js';
 import { createCard } from './components/card.js';
 import { closeModal, openModal } from './components/modal.js';
 import * as api from './components/api.js';
+import { enableValidation, clearValidation } from './components/validation.js';
 
 const cardsParent = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template');
@@ -25,8 +25,22 @@ const profilDesc = document.querySelector('.profile__description');
 const profilImage = document.querySelector('.profile__image');
 const addButton = document.querySelector('.profile__add-button');
 
+const avatarForm = document.forms['avatar-form'];
 const newPlaceForm = document.forms["new-place"];
 const editProfileForm = document.forms["edit-profile"];
+
+const avatarPopup = document.querySelector('.popup_type_avatar');
+const avatarInput = avatarPopup.querySelector('#avatar-input');
+
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
 
 let userId;
 //events
@@ -42,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       drawCards(initialCards, cardsParent);
     });
+  enableValidation(validationConfig);
 });
 
 document.querySelectorAll('.popup').forEach(modal => {
@@ -71,13 +86,28 @@ closeButtons.forEach((btn) => {
   });
 });
 
-addButton.addEventListener('click', () => openModal(newCardPupup));
+addButton.addEventListener('click', () => {
+  newPlaceForm.reset();
+  clearValidation(newPlaceForm, validationConfig);
+  openModal(newCardPupup)
+});
+
+profilImage.addEventListener('click', () => {
+  avatarForm.reset();
+  clearValidation(avatarForm, validationConfig);
+  openModal(avatarPopup);
+});
 
 newPlaceForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   addNewCard(evt, inputNameFormNewCard, inputLinkFormNewCard, cardsParent);
   evt.target.reset();
   closeModal(newCardPupup);
+});
+
+avatarForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  handleAvatarFormSubmit();
 });
 
 //functions
@@ -94,6 +124,7 @@ function drawCards(cards, container) {
 function openProfileModal(modal, nameInput, descriptionInput, profilTitle, profilDesc) {
   nameInput.value = profilTitle.textContent;
   descriptionInput.value = profilDesc.textContent;
+  clearValidation(editProfileForm, validationConfig);
   openModal(modal);
 }
 
@@ -135,6 +166,18 @@ function addNewCard(evt, inputNameFormNewCard, inputLinkFormNewCard, cardsParent
     .catch((err) => {
       console.error(`Ошибка: ${err}`);
     })
+  clearValidation(newPlaceForm, validationConfig);
+}
 
+function handleAvatarFormSubmit() {
+  api.updateUserAvatar(avatarInput.value)
+    .then((userData) => {
+      profilImage.style.backgroundImage = `url(${userData.avatar})`;
+      closeModal(avatarPopup);
+      avatarForm.reset();
+    })
+    .catch((err) => {
+      console.error(`Ошибка: ${err}`);
+    })
 }
 
