@@ -138,6 +138,7 @@ function openImagePopup(src, alt, caption) {
 
 function updateProfileData(evt, nameInput, descriptionInput, profilTitle, profilDesc) {
   evt.preventDefault();
+  loader(true, editProfileForm);
 
   const input = { name: nameInput.value, about: descriptionInput.value };
 
@@ -147,11 +148,16 @@ function updateProfileData(evt, nameInput, descriptionInput, profilTitle, profil
   })
     .catch((err) => {
       console.error(`Ошибка: ${err}`);
+    })
+    .finally(() => {
+      loader(false, editProfileForm);
     });
 }
 
 function addNewCard(evt, inputNameFormNewCard, inputLinkFormNewCard, cardsParent) {
   evt.preventDefault();
+
+  loader(true, newPlaceForm);
 
   const newImg = inputNameFormNewCard.value;
   const newUrl = inputLinkFormNewCard.value;
@@ -166,10 +172,14 @@ function addNewCard(evt, inputNameFormNewCard, inputLinkFormNewCard, cardsParent
     .catch((err) => {
       console.error(`Ошибка: ${err}`);
     })
+    .finally(() => {
+      loader(false, newPlaceForm);
+    })
   clearValidation(newPlaceForm, validationConfig);
 }
 
 function handleAvatarFormSubmit() {
+  loader(true, avatarForm);
   api.updateUserAvatar(avatarInput.value)
     .then((userData) => {
       profilImage.style.backgroundImage = `url(${userData.avatar})`;
@@ -179,5 +189,12 @@ function handleAvatarFormSubmit() {
     .catch((err) => {
       console.error(`Ошибка: ${err}`);
     })
+    .finally(() => {
+      loader(false, avatarForm);
+    })
 }
 
+const loader = (isLoading, formElement) => {
+  const buttonElement = formElement.querySelector('.popup__button');
+  buttonElement.textContent = isLoading ? 'Сохранение...' : 'Сохранить';
+}
