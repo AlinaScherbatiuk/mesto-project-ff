@@ -1,7 +1,8 @@
 import './pages/index.css';
-import { initialCards } from './components/cards.js';
+//import { initialCards } from './components/cards.js';
 import { createCard } from './components/card.js';
 import { closeModal, openModal } from './components/modal.js';
+import * as api from './components/api.js';
 
 const cardsParent = document.querySelector('.places__list');
 const cardTemplate = document.querySelector('#card-template');
@@ -21,14 +22,26 @@ const inputLinkFormNewCard = document.querySelector('.popup__input_type_url');
 const editButton = document.querySelector('.profile__edit-button');
 const profilTitle = document.querySelector('.profile__title');
 const profilDesc = document.querySelector('.profile__description');
+const profilImage = document.querySelector('.profile__image');
 const addButton = document.querySelector('.profile__add-button');
 
 const newPlaceForm = document.forms["new-place"];
 const editProfileForm = document.forms["edit-profile"];
 
+let userId;
 //events
 document.addEventListener('DOMContentLoaded', () => {
-  drawCards(initialCards, cardsParent);
+
+  Promise.all([api.getUserInfo(), api.getInitialCards()])
+    .then(([user, initialCards]) => {
+      profilTitle.textContent = user.name;
+      profilDesc.textContent = user.about;
+      userId = user._id;
+      if (user.avatar) {
+        profilImage.style.backgroundImage = `url(${user.avatar})`;
+      }
+      drawCards(initialCards, cardsParent);
+    });
 });
 
 document.querySelectorAll('.popup').forEach(modal => {
@@ -70,7 +83,9 @@ newPlaceForm.addEventListener('submit', (evt) => {
 //functions
 function drawCards(cards, container) {
   cards.forEach((card) => {
-    const cardElem = createCard(card, () => openImagePopup(card.link, card.name, card.name), cardTemplate);
+    const cardElem = createCard(card,
+      () => openImagePopup(card.link, card.name, card.name),
+      cardTemplate, userId);
 
     container.append(cardElem);
   });
@@ -93,11 +108,15 @@ function openImagePopup(src, alt, caption) {
 function updateProfileData(evt, nameInput, descriptionInput, profilTitle, profilDesc) {
   evt.preventDefault();
 
-  const nameInputValue = nameInput.value;
-  const jobInputValue = descriptionInput.value;
+  const input = { name: nameInput.value, about: descriptionInput.value };
 
-  profilTitle.textContent = nameInputValue;
-  profilDesc.textContent = jobInputValue;
+  api.updateUserInfo(input).then((userData) => {
+    profilTitle.textContent = userData.name;
+    profilDesc.textContent = userData.about;
+  })
+    .catch((err) => {
+      console.error(`Ошибка: ${err}`);
+    });
 }
 
 function addNewCard(evt, inputNameFormNewCard, inputLinkFormNewCard, cardsParent) {
@@ -105,9 +124,17 @@ function addNewCard(evt, inputNameFormNewCard, inputLinkFormNewCard, cardsParent
 
   const newImg = inputNameFormNewCard.value;
   const newUrl = inputLinkFormNewCard.value;
+
   const card = { name: newImg, link: newUrl };
-  const cardElem = createCard(card,
-    () => openImagePopup(card.link, card.name, card.name), cardTemplate);
-  cardsParent.prepend(cardElem);
+  api.addCard(card)
+    .then((newCardData) => {
+      const cardElem = createCard(newCardData,
+        () => openImagePopup(card.link, card.name, card.name), cardTemplate, userId);
+      cardsParent.prepend(cardElem);
+    })
+    .catch((err) => {
+      console.error(`Ошибка: ${err}`);
+    })
+
 }
 

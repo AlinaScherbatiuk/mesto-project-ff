@@ -1,0 +1,15 @@
+.card__like-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3px;
+  align-items: center;
+}
+.card__like-counter {
+  display: block;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 13px;
+  line-height: 16px;
+  color: #000;
+  margin: 0;
+}
