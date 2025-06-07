@@ -32,7 +32,6 @@ const editProfileForm = document.forms["edit-profile"];
 const avatarPopup = document.querySelector('.popup_type_avatar');
 const avatarInput = avatarPopup.querySelector('#avatar-input');
 
-
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -45,7 +44,6 @@ const validationConfig = {
 let userId;
 //events
 document.addEventListener('DOMContentLoaded', () => {
-
   Promise.all([api.getUserInfo(), api.getInitialCards()])
     .then(([user, initialCards]) => {
       profilTitle.textContent = user.name;
