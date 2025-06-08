@@ -1,5 +1,5 @@
 import './pages/index.css';
-import { createCard } from './components/card.js';
+import { createCard, handleLikeClick, handleDeleteClick } from './components/card.js';
 import { closeModal, openModal } from './components/modal.js';
 import * as api from './components/api.js';
 import { enableValidation, clearValidation } from './components/validation.js';
@@ -113,6 +113,8 @@ function drawCards(cards, container) {
   cards.forEach((card) => {
     const cardElem = createCard(card,
       () => openImagePopup(card.link, card.name, card.name),
+      handleLikeClick,
+      handleDeleteClick,
       cardTemplate, userId);
 
     container.append(cardElem);
@@ -164,7 +166,10 @@ function addNewCard(evt, inputNameFormNewCard, inputLinkFormNewCard, cardsParent
   api.addCard(card)
     .then((newCardData) => {
       const cardElem = createCard(newCardData,
-        () => openImagePopup(card.link, card.name, card.name), cardTemplate, userId);
+        () => openImagePopup(card.link, card.name, card.name),
+        handleLikeClick,
+        handleDeleteClick,
+        cardTemplate, userId);
       cardsParent.prepend(cardElem);
     })
     .catch((err) => {
